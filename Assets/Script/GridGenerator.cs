@@ -2,64 +2,51 @@ using UnityEngine;
 
 public class GridGenerator : MonoBehaviour
 {
-
-    public GameObject tilePrefab;
-    public int gridWidth = 10;
-    public int gridHeight = 10;
-    public float tileSize = 1.0f;
-    public Color firstCube;
-    public Color secoundCube;
-
+    public GameObject tilePrefab; // Prefab for the grid tiles
+    public int gridWidth = 10; // Width of the grid
+    public int gridHeight = 10; // Height of the grid
+    public float tileSize = 1.0f; // Size of each tile
+    public Color firstCube; // Color for the first set of cubes
+    public Color secondCube; // Color for the second set of cubes
 
     void Start()
     {
+        // Call GenerateGrid method when the script starts
         GenerateGrid();
     }
 
     void GenerateGrid()
-{
-    for (int x = 0; x < gridWidth; x++)
     {
-        for (int y = 0; y < gridHeight; y++)
+        // Loop through the grid dimensions
+        for (int x = 0; x < gridWidth; x++)
         {
-            GameObject tile = Instantiate(tilePrefab, new Vector3(x * tileSize, 0, y * tileSize), Quaternion.identity);
-            TileInfo tileComponent = tile.AddComponent<TileInfo>();
-            tileComponent.SetTileInfo(x, y);
-            tile.name = $"Tile_{x}_{y}";
-            tile.transform.parent = transform;
-            
-           // tileComponent.SetColor(normalColor);
+            for (int y = 0; y < gridHeight; y++)
+            {
+                // Instantiate a new tile at the specified position
+                GameObject tile = Instantiate(tilePrefab, new Vector3(x * tileSize, 0, y * tileSize), Quaternion.identity);
 
+                // Add TileInfo component to the tile and set its information
+                TileInfo tileComponent = tile.AddComponent<TileInfo>();
+                tileComponent.SetTileInfo(x, y);
 
-             // Set color based on checkerboard pattern
+                // Set the name of the tile for easy identification
+                tile.name = $"Tile_{x}_{y}";
+
+                // Set the parent of the tile to the GridGenerator object
+                tile.transform.parent = transform;
+
+                // Set color based on checkerboard pattern
                 if ((x + y) % 2 == 0)
                 {
-                    tileComponent.SetColor(firstCube); // White for even sums of x + y
+                    // Use firstCube color for even sums of x + y
+                    tileComponent.SetColor(firstCube);
                 }
                 else
                 {
-                    tileComponent.SetColor(secoundCube); // Black for odd sums of x + y
+                    // Use secondCube color for odd sums of x + y
+                    tileComponent.SetColor(secondCube);
                 }
-
-           
+            }
         }
     }
 }
-
-}
-
-
-// void GenerateGrid()
-//     {
-//         for (int x = 0; x < gridSize; x++)
-//         {
-//             for (int y = 0; y < gridSize; y++)
-//             {
-//                 Vector3 position = new Vector3(x, 0, y);
-//                 GameObject cube = Instantiate(cubePrefab, position, Quaternion.identity);
-//                 cube.name = $"Cube_{x}_{y}";
-//                 cube.AddComponent<TileInfo>().SetTileInfo(x, y);
-//             }
-//         }
-//     }
-
